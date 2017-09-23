@@ -1,29 +1,19 @@
 package org.rancode.module.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.UUID;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
 import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
 import org.rancode.framework.util.Item;
 import org.rancode.framework.util.MyFont;
 import org.rancode.module.services.Impl.CategoryServiceImpl;
 import org.rancode.module.services.Impl.GoodsServiceImpl;
 import org.rancode.module.services.Impl.WarehouseServiceImpl;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
 
 public class AddGoodsJFrame extends JFrame implements MouseListener {
 
@@ -35,18 +25,66 @@ public class AddGoodsJFrame extends JFrame implements MouseListener {
 	JButton button_add;
 
 	// 获得屏幕的大小
-	final static int width = Toolkit.getDefaultToolkit().getScreenSize().width;
-	final static int height = Toolkit.getDefaultToolkit().getScreenSize().height;
+//	 final static int $width = Toolkit.getDefaultToolkit().getScreenSize().width;
+//	final static int $height = Toolkit.getDefaultToolkit().getScreenSize().height;
 
 	// 父面板对象
 	GoodsManagerJPanel parentPanel;
+	private JPanel panel;
 
 	public AddGoodsJFrame(GoodsManagerJPanel parentPanel) {
+		
 		this.parentPanel = parentPanel;
 
 		initBackgroundPanel();
 
-		this.add(backgroundPanel);
+		getContentPane().add(backgroundPanel);
+		
+		panel = new JPanel();
+		backgroundPanel.add(panel, BorderLayout.CENTER);
+		panel.setLayout(new BorderLayout(0, 0));
+		contentPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints c1 = new GridBagConstraints();
+		c1.gridx = 0;
+		c1.gridy = 0;
+		c1.weightx = 1.0;
+		c1.weighty = 1.0;
+		c1.fill = GridBagConstraints.BOTH ;
+//        // 加入 topPanel
+		backgroundPanel.add(contentPanel,c1);
+	
+		panel.add(contentPanel, BorderLayout.NORTH);
+		
+				label_name = new JLabel("项目名称：", JLabel.RIGHT);
+				label_origin = new JLabel("项目地：", JLabel.RIGHT);
+				label_price = new JLabel("项目工程款：", JLabel.RIGHT);
+				label_stock = new JLabel("起始日期：", JLabel.RIGHT);
+				label_warehouse = new JLabel("结束日期：", JLabel.RIGHT);
+				label_category = new JLabel("项目客户：", JLabel.RIGHT);
+				
+						name = new JTextField("");
+						price = new JTextField("");
+						origin = new JTextField("");
+						stock = new JTextField("");
+						
+								// 商品种类下拉框
+								category = new JComboBox();
+								
+										// 仓库下拉框
+										warehouse = new JComboBox();
+										
+												contentPanel.add(label_name);
+												contentPanel.add(name);
+												contentPanel.add(label_price);
+												contentPanel.add(price);
+												contentPanel.add(label_origin);
+												contentPanel.add(origin);
+												contentPanel.add(label_stock);
+												contentPanel.add(stock);
+												contentPanel.add(label_category);
+												contentPanel.add(category);
+												contentPanel.add(label_warehouse);
+												contentPanel.add(warehouse);
 
 		this.setTitle("添加项目");
 		this.setSize(540, 360);
@@ -57,15 +95,15 @@ public class AddGoodsJFrame extends JFrame implements MouseListener {
 
 	// 初始化背景面板
 	public void initBackgroundPanel() {
-		backgroundPanel = new JPanel(new BorderLayout());
+		backgroundPanel = new JPanel(new GridBagLayout());
 
 		initContentPanel();
 		initButtonPanel();
 		initLabelPanel();
 
-		backgroundPanel.add(labelPanel, "North");
-		backgroundPanel.add(contentPanel, "Center");
-		backgroundPanel.add(buttonPanel, "South");
+
+		backgroundPanel.add(labelPanel, BorderLayout.NORTH);
+		backgroundPanel.add(buttonPanel, BorderLayout.SOUTH);
 	}
 
 	// 初始化label面板
@@ -73,7 +111,7 @@ public class AddGoodsJFrame extends JFrame implements MouseListener {
 
 		labelPanel = new JPanel();
 
-		JLabel title = new JLabel("商品信息");
+		JLabel title = new JLabel("项目信息");
 		title.setFont(MyFont.Static);
 
 		labelPanel.add(title);
@@ -81,22 +119,6 @@ public class AddGoodsJFrame extends JFrame implements MouseListener {
 
 	// 初始化商品信息面板
 	public void initContentPanel() {
-		contentPanel = new JPanel(new GridLayout(6, 2,50,10));
-
-		label_name = new JLabel("项目名称", JLabel.RIGHT);
-		label_origin = new JLabel("项目地", JLabel.RIGHT);
-		label_price = new JLabel("项目工程款", JLabel.RIGHT);
-		label_stock = new JLabel("起始日期", JLabel.RIGHT);
-		label_warehouse = new JLabel("结束日期", JLabel.RIGHT);
-		label_category = new JLabel("项目客户", JLabel.RIGHT);
-
-		name = new JTextField("");
-		price = new JTextField("");
-		origin = new JTextField("");
-		stock = new JTextField("");
-
-		// 商品种类下拉框
-		category = new JComboBox();
 		CategoryServiceImpl categoryService = new CategoryServiceImpl();
 		List<Object[]> list_category = null;
 		try {
@@ -112,9 +134,6 @@ public class AddGoodsJFrame extends JFrame implements MouseListener {
 				category.addItem(new Item(id, name));
 			}
 		}
-
-		// 仓库下拉框
-		warehouse = new JComboBox();
 		WarehouseServiceImpl warehouseService = new WarehouseServiceImpl();
 		List<Object[]> list_warehouse = null;
 		try {
@@ -130,19 +149,6 @@ public class AddGoodsJFrame extends JFrame implements MouseListener {
 				warehouse.addItem(new Item(id, name));
 			}
 		}
-
-		contentPanel.add(label_name);
-		contentPanel.add(name);
-		contentPanel.add(label_price);
-		contentPanel.add(price);
-		contentPanel.add(label_origin);
-		contentPanel.add(origin);
-		contentPanel.add(label_stock);
-		contentPanel.add(stock);
-		contentPanel.add(label_category);
-		contentPanel.add(category);
-		contentPanel.add(label_warehouse);
-		contentPanel.add(warehouse);
 
 	}
 

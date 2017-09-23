@@ -132,7 +132,7 @@ public class GoodsManagerJPanel implements ActionListener, MouseListener {
 		searchPanel.add(label_warehouse);
 		searchPanel.add(select_warehouse);
 
-		topPanel.add(searchPanel, "East");
+		topPanel.add(searchPanel,"Center");
 
 	}
 
@@ -140,7 +140,7 @@ public class GoodsManagerJPanel implements ActionListener, MouseListener {
 	public void initTablePanel() {
 
 		String conditionParams[] = { "全部", "全部" };
-		String params[] = { "项目id", "名称", "价格", "产地", "所属分类", "所属仓库", "库存", "仓库id", "分类id" };
+		String params[] = { "项目id", "项目名", "项目款金额", "项目地", "所属分类", "所属仓库", "库存", "仓库id", "分类id" };
 		GoodsServiceImpl goodsService = new GoodsServiceImpl();
 		Vector<Vector> vector = new Vector<Vector>();
 		try {
@@ -227,7 +227,7 @@ public class GoodsManagerJPanel implements ActionListener, MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == tool_add) {
-			new AddGoodsJFrame(this);
+			new AddGoodsJFrameNew(this);
 		} else if (e.getSource() == tool_modify) {
 			int row = table.getSelectedRow();
 			if (row < 0) {

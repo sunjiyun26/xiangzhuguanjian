@@ -52,7 +52,7 @@ public class ModifyGoodsJFrame extends JFrame implements MouseListener {
 
 		this.add(backgroundPanel);
 
-		this.setTitle("修改商品");
+		this.setTitle("修改项目");
 		this.setSize(640, 360);
 		this.setVisible(true);
 		this.setLocationRelativeTo(null);
